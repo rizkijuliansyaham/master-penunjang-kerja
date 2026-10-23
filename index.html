@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tools Penunjang Kerja</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1a1d23;--mu:#6b7280;--bd:#e2e5ea;--ac:#2563eb;--chip:#eef2ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111317;--card:#1a1d23;--tx:#e8eaee;--mu:#9aa1ad;--bd:#2c313a;--ac:#6ea0ff;--chip:#222a3d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111317;--card:#1a1d23;--tx:#e8eaee;--mu:#9aa1ad;--bd:#2c313a;--ac:#6ea0ff;--chip:#222a3d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:960px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:24px;margin:0 0 4px}
+.sub{color:var(--mu);margin:0 0 18px;font-size:14px}
+input{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+a.card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;text-decoration:none;color:inherit;transition:transform .12s,border-color .12s}
+a.card:hover{transform:translateY(-2px);border-color:var(--ac)}
+.ic{font-size:28px;line-height:1}
+.t{font-weight:600;font-size:16px}
+.d{color:var(--mu);font-size:13.5px;flex:1}
+.u{font-size:12px;color:var(--ac);word-break:break-all}
+.tag{align-self:flex-start;font-size:11px;background:var(--chip);color:var(--ac);padding:2px 8px;border-radius:99px}
+.empty{color:var(--mu);text-align:center;padding:30px 0;display:none}
+.cat{margin-bottom:26px}
+.cat h2{font-size:15px;margin:0 0 10px;color:var(--mu);font-weight:600;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<main>
+<h1>🧰 Tools Penunjang Kerja</h1>
+<p class="sub">Kumpulan halaman bantu untuk pekerjaan harian. Klik kartu untuk membuka.</p>
+<input id="q" type="search" placeholder="Cari tool..." autocomplete="off">
+<div id="g"></div>
+<p class="empty" id="e">Tidak ada tool yang cocok.</p>
+</main>
+<script>
+const TOOLS=[
+{icon:"🧹",title:"Log JSON Flutter Cleaner",description:"Merapikan log JSON dari Flutter/terminal supaya mudah dibaca.",url:"https://rizkijuliansyaham.github.io/my-log-json-flutter-cleaner/",label:"JSON",category:"🛠️ Developer Tools"},
+{icon:"🎯",title:"Simple Generator JSON ke Dart",description:"Mengubah JSON menjadi kode model Dart dengan cepat.",url:"https://rizkijuliansyaham.github.io/simple-generator-json-dart/",label:"Dart",category:"🛠️ Developer Tools"},
+{icon:"🛠️",title:"My Mini Tools",description:"Kumpulan alat kecil serbaguna untuk kebutuhan sehari-hari.",url:"https://rizkijuliansyaham.github.io/my-mini-tools/",label:"Utilitas",category:"🛠️ Developer Tools"},
+{icon:"🖼️",title:"Images Prompting",description:"Halaman bantu untuk menyusun prompt gambar.",url:"https://rizkijuliansyaham.github.io/images-prompting/",label:"Prompt",category:"🎨 AI & Kreatif"}
+];
+const g=document.getElementById('g'),e=document.getElementById('e'),q=document.getElementById('q');
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function render(){
+  const k=q.value.trim().toLowerCase();
+  const l=TOOLS.filter(x=>(x.title+x.description+x.label+x.url).toLowerCase().includes(k));
+  const card=x=>`<a class="card" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer"><span class="ic">${x.icon}</span><span class="t">${esc(x.title)}</span><span class="d">${esc(x.description)}</span><span class="tag">${esc(x.label)}</span><span class="u">${esc(x.url.replace('https://',''))}</span></a>`;
+  const cats=[...new Set(l.map(x=>x.category))];
+  g.innerHTML=cats.map(c=>`<section class="cat"><h2>${esc(c)}</h2><div class="grid">${l.filter(x=>x.category===c).map(card).join('')}</div></section>`).join('');
+  e.style.display=l.length?'none':'block';
+}
+q.addEventListener('input',render);render();
+</script>
+</body>
+</html>
